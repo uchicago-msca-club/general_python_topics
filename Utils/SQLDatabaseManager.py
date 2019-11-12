@@ -118,7 +118,8 @@ def main():
     host = 'localhost'
     database = 'kdd_2014'
     user = 'root'
-    password = 'Irahirs1!'
+    # password = 'Irahirs1!'
+    password = 'root'
     port = '3306'
 
     ret = sqldbm.connect(host=host,

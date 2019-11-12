@@ -10,6 +10,7 @@
 """
 
 import pandas as pd
+import pickle
 from Utils.SQLDatabaseManager import SQLDatabaseManager
 
 
@@ -18,6 +19,9 @@ class DataExtractor:
     def __init__(self):
         pass
 
+    # -------------------------------------------------------------------------
+    # CSV FILES
+    # -------------------------------------------------------------------------
     @staticmethod
     def read_csv(fpath, sep=",", names=None, nrows_to_read=None,
                  na_vals=None):
@@ -43,6 +47,20 @@ class DataExtractor:
             return pd.DataFrame()
         return df
 
+
+    @staticmethod
+    def write_to_csv(self, df, filepath, seperator=","):
+        try:
+            df.to_csv(filepath, sep=seperator)
+        except Exception as e:
+            print(" Exception thrown while writing CSV file/buffer :", e)
+            return -1
+        return 1
+
+    # -------------------------------------------------------------------------
+    # DATABASE OPERATIONS
+    # -------------------------------------------------------------------------
+    @staticmethod
     def read_db(self, db, query, host="localhost", user="root", pwd="root" ):
         # Load the data from the database
         sqldbm = SQLDatabaseManager()
@@ -65,6 +83,7 @@ class DataExtractor:
 
         return data
 
+    @staticmethod
     def write_to_db(self, db, df, table_name,
                     host="localhost", user="root", pwd="Irahirs1!", if_table_exists="replace"):
         # Save the data to the DB
@@ -91,19 +110,30 @@ class DataExtractor:
 
         return ret
 
-    def write_to_csv(self, df, filepath, seperator=","):
+    # -------------------------------------------------------------------------
+    # GENERIC OBJECT FILES
+    # -------------------------------------------------------------------------
+    @staticmethod
+    def save_obj_to_disk(self, obj, filename):
         try:
-            df.to_csv(filepath, sep=seperator)
+            with open(filename, 'wb') as handle:
+                pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
         except Exception as e:
-            print(" Exception thrown while writing CSV file/buffer :", e)
-            return -1
-        return 1
+            print(e)
+
+    @staticmethod
+    def load_obj_from_disk(self, filename):
+        try:
+            with open(filename, 'rb') as handle:
+                b = pickle.load(handle)
+                return b
+        except Exception as e:
+            print(e)
 
 
 def main():
 
-    file_path = "C:\\Users\\SSrih\\OneDrive\\UChicago\\DEP\\Project\\data" \
-                "\\Crime\\crime_10krows.csv"
+    file_path = ""
 
     data_extractor = DataExtractor()
     data = data_extractor.read_csv(fpath=file_path)
