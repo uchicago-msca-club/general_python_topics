@@ -24,7 +24,7 @@ class DataExtractor:
     # -------------------------------------------------------------------------
     @staticmethod
     def read_csv(fpath, sep=",", names=None, nrows_to_read=None,
-                 na_vals=None):
+                 na_vals=None, **kwargs):
         """
         Populates a pandas dataframe by reading a csv file or buffer
         :param fpath: file_path of .csv or buffer
@@ -41,7 +41,8 @@ class DataExtractor:
             df = pd.read_csv(filepath_or_buffer=fpath,
                              sep=sep, names=names,
                              nrows=nrows_to_read,
-                             na_values=na_vals)
+                             na_values=na_vals,
+                             **kwargs)
         except Exception as e:
             print(" Exception thrown while reading CSV file/buffer :", e)
             return pd.DataFrame()
